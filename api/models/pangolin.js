@@ -7,6 +7,10 @@ const pangolinSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  password: {
+    type: String,
+    required: true
+  },
   age: {
     type: Number,
     required: true
@@ -28,7 +32,7 @@ const pangolinSchema = new mongoose.Schema({
     default: Date.now
   },
   updated_at: {
-    type: Date,
+    type: Date
   }
 }, {collection : 'Pangolin'});
 

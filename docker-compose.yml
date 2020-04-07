@@ -2,6 +2,7 @@ version: "3"
 
 services:
   angular:
+    container_name:  frontend
     build: frontend 
     ports:
       - "4000:4000" 
@@ -9,20 +10,23 @@ services:
       - NODE_ENV=dev
 
   express: 
+    container_name:  api
     build: api 
     ports:
       - "3000:3000"
     links:
       - database
 
-  database: # name of the third service
-    image: mongo # specify image to build container from
+  database: #
+    container_name: database
+    image: mongo 
     ports:
-      - "27017:27017" # specify port forewarding
-  nginx: #name of the second service
-    build: loadbalancer # specify the directory of the Dockerfile
+      - "27017:27017" 
+
+  nginx: 
+    build: loadbalancer 
     ports:
-      - "80:8000" #specify ports forewarding
+      - "80:8000" 
     links:
       - express
       - angular

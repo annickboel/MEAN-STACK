@@ -26,5 +26,13 @@ router
   .route("/pangolins/:id")
   .put(pangolinController.update)
 
+// pangolin_delete
+router
+  .route("/pangolins/:id")
+  .delete(pangolinController.delete)
+
+router
+	.route("/authenticate")
+	.post(pangolinController.authenticate);
 
 module.exports = router

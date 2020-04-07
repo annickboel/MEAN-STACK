@@ -20,8 +20,15 @@ class ObjectNotFoundError extends ApplicationError {
   }
 }
 
+class AuthenticationFailedError extends ApplicationError {
+  constructor (message) {
+    super(message || 'authentication failed', 401, AuthenticationFailedError.name)
+  }
+}
+
 module.exports = {
   ApplicationError,
   NotFoundError,
-  ObjectNotFoundError
+  ObjectNotFoundError,
+  AuthenticationFailedError
 }

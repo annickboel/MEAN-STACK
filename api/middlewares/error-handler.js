@@ -4,5 +4,6 @@ export default (err, req, res, next) => {
   if (!err.hasOwnProperty('name')) {
     err = new ApplicationError(err.stack || null, 500)
   }
-  res.status(err.status || 500).send(err)
+  const error = {'status': 'failure', 'error': err}
+  res.status(err.status || 500).send(error)
 }

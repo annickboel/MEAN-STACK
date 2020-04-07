@@ -8,5 +8,5 @@ export default (app) => {
   ])
   
   app.use(errorHandler)
-  //app.use(defaultRoute)
+  app.use(defaultRoute)
 }

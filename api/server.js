@@ -17,13 +17,10 @@ mongoose.connect("mongodb://database/mongodb", {
   useNewUrlParser: true
 });
 var db = mongoose.connection;
-
-// Added check for DB connection
 if (!db) console.log("Error connecting db");
 else console.log("Db connected successfully");
 
 // Import routes
-//let apiRoutes = require("./api-routes");
 routes(app)
 
 
@@ -44,12 +41,6 @@ routes(app)
     }
   }).unless({ path: ["/api/user/authenticate", "/api/users"] })
 );*/
-
-// Use Api routes in the App
-/*app.use("/api", apiRoutes);
-app.use((err, req, res, next) => {
-  handleError(err, res);
-});*/
 
 // start server
 let port = process.env.NODE_ENV ? process.env.NODE_ENV : 3000;
