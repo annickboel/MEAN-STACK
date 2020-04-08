@@ -1,3 +1,3 @@
 import Pangolin from './pangolin'
-import User from './user'
+import Contact from './contact'
 

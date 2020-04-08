@@ -68,7 +68,7 @@ const authenticate = function(req, res, next) {
   catch(error => next(error))
 }
 
-const delete = (req, res, next) => {
+/*const delete = (req, res, next) => {
   const pangolinId = req.params.id
   pangolinService.delete(pangolinId).
   then((status) => {
@@ -76,13 +76,12 @@ const delete = (req, res, next) => {
     return res.status(200).send(message)
   }).
   catch(error => next(error))
-}
+}*/
 
 module.exports = {
   get,
   list,
   create,
   update,
-  delete,
   authenticate
 }

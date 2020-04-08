@@ -34,7 +34,6 @@ const update = (pangolin) => {
     race: pangolin.race,
     age: pangolin.age,
     food: pangolin.food,
-    //updated_at: new Date(Date.now)
   }
   return Pangolin.findByIdAndUpdate(pangolin.id, data, { new: true }).then((pangolin) => {
     if (!pangolin) {
@@ -47,33 +46,9 @@ const update = (pangolin) => {
   })
 }
 
-const authenticate = (name, password) => {
-  return Pangolin.findOne({ name: name}).then((pangolin) => {
-    if (!pangolin) {
-      throw new ObjectNotFoundError('Pangolin', name)
-    }
-    if (pangolin && bcrypt.compareSync(password, pangolin.password)) {
-      const status = {'status': 'success', 'token': jwt.sign({ sub: pangolin._id }, "Thisismyscretkey")}
-      return status
-    }
-    else {
-      throw new AuthenticationFailedError('Pangolin', name)
-    } 
-  })
-}
-
-const delete = (id) => {
-  return Pangolin.remove({_id: id}).then(()) => {
-    const status = {'status': 'success'}
-    return status
-  }
-}
-
 module.exports = {
   get,
   list,
   create,
-  update,
-  delete,
-  authenticate
+  update
 }

@@ -26,17 +26,8 @@ const pangolinSchema = new mongoose.Schema({
   food: {
     type: String,
     required: true
-  },
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  updated_at: {
-    type: Date
   }
-}, {collection : 'Pangolin'});
+}, {collection : 'pangolins'});
 
-let PangolinsModel = mongoose.model('Pangolin', pangolinSchema);
-
-
-export default PangolinsModel;
+let Pangolin = mongoose.model('Pangolin', pangolinSchema);
+export default Pangolin;
