@@ -5,14 +5,14 @@ const contactSchema = new mongoose.Schema({
   pangolin_id: {
     type: String,
     required: true,
-    unique: true
   },
-  name: {
+  contact_id: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   }
 }, {collection : 'contacts'});
+
+//contactSchema.index({ pangolin_id: 1, contact_id: 1 }, { unique: true });
 
 let Contact = mongoose.model('Contact', contactSchema);
 export default Contact;

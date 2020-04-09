@@ -8,22 +8,16 @@ const router = express.Router()
 // contact_list
 router
 	.route('/pangolins/:pangolin_id/contacts')
-	.get(contactController.list)
- 
- // available contact_ltst
-/*router
-  .route('/pangolins/available_contacts')
-  .get(contactController.available_list)
- 
+	.get(contactController.list_contacts)
+  
 // add_contact
 router
-  .route("/pangolins/:id/contacts")
-  .post(contactController.create)
+  .route("/pangolins/:pangolin_id/contacts")
+  .post(contactController.create_contact)
 
-// remove_contact
+//remove_contact
 router
   .route("/pangolins/:pangolin_id/contacts/:contact_id")
-  .put(contactController.delete)*/
-
+  .delete(contactController.delete_contact)
 
 module.exports = router
