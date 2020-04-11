@@ -26,9 +26,16 @@ class AuthenticationFailedError extends ApplicationError {
   }
 }
 
+class AuthorizationRequiredError extends ApplicationError {
+  constructor (message) {
+    super(message || 'Authorization required', 401, AuthorizationRequiredError.name)
+  }
+}
+
 module.exports = {
   ApplicationError,
   NotFoundError,
   ObjectNotFoundError,
-  AuthenticationFailedError
+  AuthenticationFailedError,
+  AuthorizationRequiredError
 }

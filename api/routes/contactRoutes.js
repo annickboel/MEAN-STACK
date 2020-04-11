@@ -1,23 +1,22 @@
 import express from 'express'
-//import { validateToken } from '../middlewares/jwt'
+import { validateToken } from '../middlewares/token-validator'
 import contactController from '../controllers/contactController'
-//import isPrivileged from '../middlewares/is-privileged'
 
 const router = express.Router()
 
 // contact_list
 router
 	.route('/pangolins/:pangolin_id/contacts')
-	.get(contactController.list_contacts)
+	.get(validateToken, contactController.list_contacts)
   
 // add_contact
 router
   .route("/pangolins/:pangolin_id/contacts")
-  .post(contactController.create_contact)
+  .post(validateToken, contactController.create_contact)
 
 //remove_contact
 router
   .route("/pangolins/:pangolin_id/contacts/:contact_id")
-  .delete(contactController.delete_contact)
+  .delete(validateToken, contactController.delete_contact)
 
 module.exports = router
