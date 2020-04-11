@@ -8,21 +8,26 @@ const router = express.Router()
 // pangolin_list
 router
 	.route('/pangolins')
-	.get(pangolinController.list)
+	.get(pangolinController.list_pangolins)
 
 // pangolin_create
 router
   .route("/pangolins")
-  .post(pangolinController.create)
+  .post(pangolinController.create_pangolin)
 
 // pangolin_get
 router
   .route("/pangolins/:id")
-  .get(pangolinController.get)
+  .get(pangolinController.get_pangolin)
 
 // pangolin_update
 router
   .route("/pangolins/:id")
-  .put(pangolinController.update)
+  .put(pangolinController.update_pangolin)
+
+// pangolin_delete
+router
+  .route("/pangolins/:id")
+  .delete(pangolinController.delete_pangolin)
 
 module.exports = router

@@ -2,15 +2,25 @@ import Pangolin from '../models/pangolin'
 import Contact from '../models/contact'
 import { ObjectNotFoundError } from '../helpers/errors'
 
-
-const build_contact_list = (contacts, pangolins) => {
-  pangolins.forEach((pangolin) => {
-      contacts.push({'pangolin_id': pangolin.id})
+const build_list = (pangolin_id, pangolins) => {
+  let counter = 0
+  let list = []
+  return new Promise(function(resolve,reject) {
+    pangolins.forEach((pangolin, index, array) => {
+      Contact.find({'pangolin_id': pangolin.id}).then((contacts) => {
+        counter = counter + 1;
+        if (contacts.length==0) {
+          list.push({'pangolin_id': pangolin.id})
+          if (counter == pangolins.length) {
+            resolve(list)
+          }
+        }
+      }) 
+    })
   })
-  return contacts
 }
 
-const list = (pangolin_id, type) => {
+const list_contacts = (pangolin_id, type) => {
   return Pangolin.findById(pangolin_id).then((pangolin) => {
     if (!pangolin) {
       throw new ObjectNotFoundError('Pangolin', pangolin_id)
@@ -21,18 +31,14 @@ const list = (pangolin_id, type) => {
           return contacts 
       }
       else {
-        console.log('AVAILABLE '+ pangolin_id)
-        let contacts = []
-        //const contacts = Contact.find({'pangolin_id': pangolin_id})
-        contacts = Pangolin.find({ '_id': { $ne: pangolin_id } }).then(build_contact_list.bind(null, contacts))
+        const contacts = Pangolin.find({}).then(build_list.bind(null, pangolin_id))
         return contacts
       }
     }
-
   })
 }
 
-const create = (contact) => {
+const create_contact = (contact) => {
   return contact.save().then(() => {
     const status = {'status': 'success'}
     return status
@@ -46,34 +52,8 @@ const delete_contact = (pangolin_id, contact_id) => {
   })
 }
 
-
-const test_function = () => {
-  const result = {'status': 'success'}
-  return result
-}
-
-const test = () => {
-  const result = {'status': 'success'}
-  return result
-}
-
-
-
-
-/*const delete = (pangolin_id, contact_id) => {
-  return Contact.findOne({'pangolin_id': pangolin_id, 'contact_id': contact_id).then((contact) => {
-    if (!contact) {
-      throw new ObjectNotFoundError('Contact', contact_id)
-    }
-    const status = {'status': 'success'}
-    return status
-  })
-}*/
-
-
-
 module.exports = {
-  list,
-  create,
+  list_contacts,
+  create_contact,
   delete_contact
 }

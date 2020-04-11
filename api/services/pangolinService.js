@@ -1,9 +1,10 @@
 import Pangolin from '../models/pangolin'
+import Contact from '../models/contact'
 import { ObjectNotFoundError, AuthenticationFailedError } from '../helpers/errors'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-const get = (id) => {
+const get_pangolin = (id) => {
   return Pangolin.findById(id).then((pangolin) => {
     if (!pangolin) {
       throw new ObjectNotFoundError('Pangolin', id)
@@ -12,20 +13,20 @@ const get = (id) => {
   })
 }
 
-const list = () => {
+const list_pangolins = () => {
   return Pangolin.find({}).then((pangolins) => {
     return pangolins
   })
 }
 
-const create = (pangolin) => {
+const create_pangolin = (pangolin) => {
   	return pangolin.save().then(() => {
       const status = {'status': 'success'}
     	return status
   	})
 }
 
-const update = (pangolin) => {
+const update_pangolin = (pangolin) => {
   const pangolinId = pangolin.id
   const data = {
     name: pangolin.name,
@@ -46,9 +47,24 @@ const update = (pangolin) => {
   })
 }
 
+const delete_pangolin = (id) => {
+  return Pangolin.findById(id).then((pangolin) => {
+    if (!pangolin) {
+      throw new ObjectNotFoundError('Pangolin', id)
+    }
+    return Contact.remove({pangolin_id: id}).then((result) => {
+      return Pangolin.remove({_id: id}).then((result)=> {
+        const status = {'status': 'success'}
+        return status
+      })
+    })
+  })
+}
+
 module.exports = {
-  get,
-  list,
-  create,
-  update
+  get_pangolin,
+  list_pangolins,
+  create_pangolin,
+  update_pangolin,
+  delete_pangolin
 }

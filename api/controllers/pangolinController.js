@@ -3,15 +3,15 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import Pangolin from '../models/pangolin'
 
-const list = (req, res, next) => {
-  pangolinService.list().
+const list_pangolins = (req, res, next) => {
+  pangolinService.list_pangolins().
   then((pangolins) => {
     return res.status(200).send(pangolins)
   }).
   catch(error => next(error))
 }
 
-const create = (req, res, next) => {
+const create_pangolin = (req, res, next) => {
   let pangolin = Pangolin({
     name: req.body.name,
     password: req.body.password,
@@ -23,7 +23,7 @@ const create = (req, res, next) => {
   if (req.body.password) {
       pangolin.password = bcrypt.hashSync(req.body.password, 10);
   }
-  pangolinService.create(pangolin).
+  pangolinService.create_pangolin(pangolin).
   then((status) => {
     const message = {'status': status.status, 'message': 'Pangolin successfully created'}
     return res.status(201).send(message)
@@ -31,16 +31,16 @@ const create = (req, res, next) => {
   catch(error => next(error))
 }
 
-const get = (req, res, next) => {
+const get_pangolin = (req, res, next) => {
   const pangolinId = req.params.id
-  pangolinService.get(pangolinId).
+  pangolinService.get_pangolin(pangolinId).
   then((pangolin) => {
     return res.status(200).send(pangolin)
   }).
   catch(error => next(error))
 }
 
-const update = (req, res, next) => {
+const update_pangolin = (req, res, next) => {
   let toUpdate = {
   	id: req.params.id,
     name: req.body.name,
@@ -52,7 +52,7 @@ const update = (req, res, next) => {
   if (req.body.password) {
       pangolin.password = bcrypt.hashSync(req.body.password, 10);
   }
-  pangolinService.update(toUpdate).
+  pangolinService.update_pangolin(toUpdate).
   then((status) => {
     const message = {'status': status.status, 'message': 'Pangolin successfully updated'}
     return res.status(200).send(message)
@@ -60,28 +60,20 @@ const update = (req, res, next) => {
   catch(error => next(error))
 }
 
-const authenticate = function(req, res, next) {
-  pangolinService.authenticate(req.body.name, req.body.password).
-  then((pangolin) => {
-    return res.status(200).send(pangolin)
+const delete_pangolin = (req, res, next) => {
+  const pangolinId = req.params.id
+  pangolinService.delete_pangolin(pangolinId).
+  then((result) => {
+    const message = {'status': result.status, 'message': 'Pangolin successfully deleted'}
+    return res.status(200).send(message)
   }).
   catch(error => next(error))
 }
 
-/*const delete = (req, res, next) => {
-  const pangolinId = req.params.id
-  pangolinService.delete(pangolinId).
-  then((status) => {
-    const message = {'status': status.status, 'message': 'Pangolin successfully deleted'}
-    return res.status(200).send(message)
-  }).
-  catch(error => next(error))
-}*/
-
 module.exports = {
-  get,
-  list,
-  create,
-  update,
-  authenticate
+  get_pangolin,
+  list_pangolins,
+  create_pangolin,
+  update_pangolin, 
+  delete_pangolin
 }
