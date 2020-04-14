@@ -9,11 +9,6 @@ router
 	.route('/pangolins')
 	.get(pangolinController.list_pangolins)
 
-// pangolin_create
-router
-  .route("/pangolins")
-  .post(pangolinController.create_pangolin)
-
 // pangolin_get
 router
   .route("/pangolins/:id")

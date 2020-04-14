@@ -9,6 +9,7 @@ import { AlertService } from '../core/components/index';
   templateUrl: 'login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;

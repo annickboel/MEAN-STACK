@@ -9,10 +9,7 @@ import {
   ValidationService
 } from "./components/index";
 import { AuthGuard } from "./guards/index";
-import {
-  JwtInterceptorProvider,
-  ErrorInterceptorProvider
-} from "./helpers/index";
+import { JwtInterceptorProvider, ErrorInterceptorProvider } from "./helpers/index";
 import { AuthenticationService, UserService } from "./services/index";
 
 @NgModule({
@@ -29,6 +26,7 @@ import { AuthenticationService, UserService } from "./services/index";
   ],
   exports: [AlertComponent, ValidationMessagesComponent]
 })
+
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {

@@ -1,6 +1,8 @@
 import { ApplicationError } from '../helpers/errors'
 
 export default (err, req, res, next) => {
+  console.log('ERROR')
+  console.log(err)
   if (!err.hasOwnProperty('name')) {
     err = new ApplicationError(err.stack || null, 500)
   }

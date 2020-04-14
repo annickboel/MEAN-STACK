@@ -1,13 +1,32 @@
 import authService from '../services/authService'
+import Pangolin from '../models/pangolin'
+import bcrypt from 'bcryptjs'
 
-const authenticate = function(req, res, next) {
-  authService.authenticate(req.body.name, req.body.password).
-  then((pangolin) => {
-    return res.status(200).send(pangolin)
+const login = (req, res, next) => {
+  authService.login(req.body.name, req.body.password).
+  then((result) => {
+    return res.status(200).send(result)
+  }).
+  catch(error => next(error))
+}
+
+const register = (req, res, next) => {
+  let pangolin = Pangolin({
+    name: req.body.name,
+    password: req.body.password,
+    family: req.body.family,
+    race: req.body.race,
+    age: req.body.age,
+    food: req.body.food
+  });
+  authService.register(pangolin).
+  then((result) => {
+    return res.status(200).send(result)
   }).
   catch(error => next(error))
 }
 
 module.exports = {
-  authenticate
+  login,
+  register
 }

@@ -11,26 +11,6 @@ const list_pangolins = (req, res, next) => {
   catch(error => next(error))
 }
 
-const create_pangolin = (req, res, next) => {
-  let pangolin = Pangolin({
-    name: req.body.name,
-    password: req.body.password,
-    family: req.body.family,
-    race: req.body.race,
-    age: req.body.age,
-    food: req.body.food
-  });
-  if (req.body.password) {
-      pangolin.password = bcrypt.hashSync(req.body.password, 10);
-  }
-  pangolinService.create_pangolin(pangolin).
-  then((status) => {
-    const message = {'status': status.status, 'message': 'Pangolin successfully created'}
-    return res.status(201).send(message)
-  }).
-  catch(error => next(error))
-}
-
 const get_pangolin = (req, res, next) => {
   const pangolinId = req.params.id
   pangolinService.get_pangolin(pangolinId).
@@ -73,7 +53,6 @@ const delete_pangolin = (req, res, next) => {
 module.exports = {
   get_pangolin,
   list_pangolins,
-  create_pangolin,
   update_pangolin, 
   delete_pangolin
 }

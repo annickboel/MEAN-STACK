@@ -2,18 +2,21 @@ import Pangolin from '../models/pangolin'
 import { ObjectNotFoundError, AuthenticationFailedError } from '../helpers/errors'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import JWT_SECRET from   '../constants/jwt'
 
-const authenticate = (name, password) => {
+
+const JWT_SECRET = 'ThisIsMySecret'
+const JWT_VALIDITY = '1h'
+
+const login = (name, password) => {
   return Pangolin.findOne({ name: name}).then((pangolin) => {
     if (!pangolin) {
       throw new ObjectNotFoundError('Pangolin', name)
     }
     if (pangolin && bcrypt.compareSync(password, pangolin.password)) {
-
-      console.log(JWT_SECRET)
-      const status = {'status': 'success', 'token': jwt.sign({ sub: pangolin._id }, 'ThisIsMySecret')}
-      return status
+      const payload = {'name': pangolin.name }
+      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_VALIDITY })
+      const result = {'pangolin': {'name': pangolin.name, 'access_token': token, 'expires_in': JWT_VALIDITY}}
+      return result
     }
     else {
       throw new AuthenticationFailedError('Pangolin', name)
@@ -21,6 +24,18 @@ const authenticate = (name, password) => {
   })
 }
 
+const register = (pangolin) => {
+  pangolin.password = bcrypt.hashSync(pangolin.password, 10);
+  return pangolin.save().then(() => {
+    const payload = {'name': pangolin.name }
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_VALIDITY })
+    const result = {'pangolin': {'name': pangolin.name, 'access_token': token, 'expires_in': JWT_VALIDITY}}
+    return result
+   })
+}
+
+
 module.exports = {
-  authenticate
+  login,
+  register
 }
