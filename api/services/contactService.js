@@ -2,23 +2,72 @@ import Pangolin from '../models/pangolin'
 import Contact from '../models/contact'
 import { ObjectNotFoundError } from '../helpers/errors'
 
-const build_list = (pangolin_id, pangolins) => {
+
+const not_already_contact = (contact, pangolin_contacts) => {
+  let already_contact = false
+  pangolin_contacts.map((item) => {
+     if (contact.contact_id == item.contact_id) {
+       already_contact = true
+     }
+  })
+  return (!already_contact)
+}
+
+const build_available_contacts_list = (pangolin_id, pangolins) => {
   let counter = 0
   let list = []
+  let pangolin_contacts = []
   return new Promise(function(resolve,reject) {
     pangolins.forEach((pangolin, index, array) => {
       Contact.find({'pangolin_id': pangolin.id}).then((contacts) => {
         counter = counter + 1;
         if (contacts.length==0) {
-          list.push({'pangolin_id': pangolin.id})
-          if (counter == pangolins.length) {
+          list.push({
+                  'pangolin_id': -1,
+                  'contact_id': pangolin.id,
+                  'contact_name': pangolin.name,
+                  'contact_age': pangolin.age,
+                  'contact_family': pangolin.family,
+                  'contact_race': pangolin.race,
+                  'contact_food': pangolin.food})
+        }
+        else {
+          pangolin_contacts = contacts
+        }
+        if (counter == pangolins.length) {
+            list = list.filter(contact => not_already_contact(contact, pangolin_contacts))
             resolve(list)
-          }
         }
       }) 
     })
   })
 }
+
+const build_current_contacts_list = (pangolin) => {
+  let counter = 0
+  let list = []
+  return new Promise(function(resolve,reject) {
+      Contact.find({'pangolin_id': pangolin.id}).then((contacts) => {
+        contacts.forEach((contact) => {
+          Pangolin.findById(contact.contact_id).then((pangolin) => {
+             counter = counter + 1;
+             list.push({'pangolin_id': contact.pangolin_id,
+                  'contact_id': pangolin._id,
+                  'contact_name': pangolin.name,
+                  'contact_age': pangolin.age,
+                  'contact_family': pangolin.family,
+                  'contact_race': pangolin.race,
+                  'contact_food': pangolin.food})
+             if (counter == contacts.length) {
+                resolve(list)
+             }
+          })
+        })
+
+      }) 
+    })
+}
+
 
 const list_contacts = (pangolin_id, type) => {
   return Pangolin.findById(pangolin_id).then((pangolin) => {
@@ -27,11 +76,11 @@ const list_contacts = (pangolin_id, type) => {
     }
     else {
       if (type=='current') {
-          const contacts = Contact.find({'pangolin_id': pangolin_id})
+          const contacts = Pangolin.findById(pangolin_id).then(build_current_contacts_list.bind(null))
           return contacts 
       }
       else {
-        const contacts = Pangolin.find({}).then(build_list.bind(null, pangolin_id))
+        const contacts = Pangolin.find({}).then(build_available_contacts_list.bind(null, pangolin_id))
         return contacts
       }
     }

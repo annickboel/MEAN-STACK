@@ -10,6 +10,7 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true
   }
+
 }, {collection : 'contacts'});
 
 contactSchema.index({ 'pangolin_id': 1, 'contact_id': 1}, { "unique": true });
