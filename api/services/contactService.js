@@ -22,7 +22,8 @@ const build_available_contacts_list = (pangolin_id, pangolins) => {
       Contact.find({'pangolin_id': pangolin.id}).then((contacts) => {
         counter = counter + 1;
         if (contacts.length==0) {
-          list.push({
+          if (pangolin.id != pangolin_id) {
+            list.push({
                   'pangolin_id': -1,
                   'contact_id': pangolin.id,
                   'contact_name': pangolin.name,
@@ -30,6 +31,7 @@ const build_available_contacts_list = (pangolin_id, pangolins) => {
                   'contact_family': pangolin.family,
                   'contact_race': pangolin.race,
                   'contact_food': pangolin.food})
+          }
         }
         else {
           pangolin_contacts = contacts
