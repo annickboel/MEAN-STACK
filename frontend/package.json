@@ -31,7 +31,7 @@
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "bootstrap": "^4.1.1",
     "core-js": "^3.4.1",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "ngx-bootstrap": "^5.2.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.10.2"
